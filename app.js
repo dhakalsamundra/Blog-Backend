@@ -6,7 +6,6 @@ const cors = require('cors')
 const loginRouter = require('./controllers/login')
 const usersRouter = require('./controllers/users')
 const blogRouter = require('./controllers/blogs')
-const testRouter = require('./controllers/test')
 const middleware = require('./utils/middleware')
 const mongoose = require('mongoose')
 
@@ -28,10 +27,6 @@ app.use('/api/blogs', blogRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
-if (process.env.NODE_ENV === 'test') {
-  console.log('cypress',process.env.NODE_ENV)
-  app.use('/api/test', testRouter)
-}
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
