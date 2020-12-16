@@ -35,4 +35,4 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: guarded-shore-68847
           heroku_email: dhakalsamundra35@gmail.com
-          
+          mongodb_uri: ${{ secrets.MONGODB_URI }}
