@@ -12,9 +12,15 @@ blogRouter.get('/', async (request, response) => {
 blogRouter.post('/', async (req, res) => {
   const data = req.body
 
-  if(data.title === undefined || data.url === undefined || data.title.length<5) {
-    return res.status(400).json({ error: 'Title length must be minimum of 5 character.' })
-  } else {
+  if(data.title === undefined && data.url === undefined) {
+    return res.status(400).end()
+  } else if(data.title.length < 5) {
+    return res.status(400).json({ error: 'Title length must be atlest 5' })
+  }
+  else if(data.author.length < 3) {
+    return res.status(400).json({ error: 'Author length must be atlest 3' })
+  }
+  else {
     const decodedToken = jwt.verify(req.token, process.env.SECRET)
     if (!req.token || !decodedToken.id) {
       return res.status(401).json({ error: 'token missing or invalid' })
@@ -57,7 +63,12 @@ blogRouter.delete('/:id', async (req, res) => {
 
 blogRouter.put('/:id', async(req, res) => {
   const entry = req.body
-  const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, entry, { new: true }).populate('user', { username: 1, name: 1 })
+  const updateLike = {
+    likes: entry.likes
+  }
+  const updatedBlog = await Blog.findByIdAndUpdate(req.params.id, updateLike, {
+    new: true
+  })
   res.status(200).json(updatedBlog)
 })
 
